@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+    <!-- Vehicle type -->
+    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" minGap="2.5" maxSpeed="13.9" color="1,0,0"/>
+
+    <!-- NORTH -->
+    <flow id="north_straight" from="N2C" to="S2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+    <flow id="north_left"     from="N2C" to="E2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+    <flow id="north_right"    from="N2C" to="W2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+
+    <!-- SOUTH -->
+    <flow id="south_straight" from="S2C" to="N2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+    <flow id="south_left"     from="S2C" to="W2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+    <flow id="south_right"    from="S2C" to="E2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+
+    <!-- EAST -->
+    <flow id="east_straight" from="E2C" to="W2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+    <flow id="east_left"     from="E2C" to="S2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+    <flow id="east_right"    from="E2C" to="N2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+
+    <!-- WEST -->
+    <flow id="west_straight" from="W2C" to="E2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+    <flow id="west_left"     from="W2C" to="N2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+    <flow id="west_right"    from="W2C" to="S2C" begin="0" end="3600" vehsPerHour="5" type="car"/>
+</routes>

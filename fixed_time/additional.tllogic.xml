@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<additional>
+    <tlLogic id="center" type="static" programID="fixedCycle" offset="0">
+    <!-- North green -->
+    <phase duration="30" state="GGGrrrrrrrrr"/>
+    <!-- East green -->
+    <phase duration="30" state="rrrGGGrrrrrr"/>
+    <!-- South green -->
+    <phase duration="30" state="rrrrrrGGGrrr"/>
+    <!-- West green -->
+    <phase duration="30" state="rrrrrrrrrGGG"/>
+</tlLogic>
+
+</additional>
