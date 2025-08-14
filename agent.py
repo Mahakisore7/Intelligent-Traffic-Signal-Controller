@@ -12,7 +12,8 @@ else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
 # This is the command to start the SUMO simulation with a graphical interface.
-sumo_cmd = ["sumo-gui", "-c", "cross.sumocfg"]
+# Change this line in agent.py
+sumo_cmd = ["sumo-gui", "-c", "cross.sumocfg", "--tripinfo-output", "tripinfo_lqf.xml"]
 
 # --- CONTROLLER PARAMETERS ---
 MIN_GREEN_TIME = 10  # A green light will stay for at least 10 seconds.
