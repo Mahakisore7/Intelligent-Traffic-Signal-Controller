@@ -1,0 +1,9 @@
+numpy
+matplotlib
+pandas
+scikit-learn
+tensorflow
+torch
+gym
+traci
+sumolib
