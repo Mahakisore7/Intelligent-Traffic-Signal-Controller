@@ -1,9 +1,18 @@
+# analysis.py
+# Updated version to compare all three controllers: Fixed-Timer, LQF Agent, and Q-Learning Agent.
+
 import xml.etree.ElementTree as ET
-import matplotlib.pyplot as plt # Import the plotting library
+import matplotlib.pyplot as plt
+import sys
 
 def get_average_wait_time(xml_file):
     """Parses a SUMO tripinfo XML and returns the average waiting time."""
-    tree = ET.parse(xml_file)
+    try:
+        tree = ET.parse(xml_file)
+    except FileNotFoundError:
+        print(f"Error: Cannot find file '{xml_file}'. Please run the corresponding simulation first.")
+        return None
+
     root = tree.getroot()
     total_wait_time = 0.0
     vehicle_count = 0
@@ -16,43 +25,39 @@ def get_average_wait_time(xml_file):
         return 0
     return total_wait_time / vehicle_count
 
-def plot_results(fixed_time, lqf_time):
-    """Creates and displays a bar chart comparing the results."""
-    controllers = ['Fixed-Timer', 'LQF Agent']
-    wait_times = [fixed_time, lqf_time]
+def plot_results(fixed_time, lqf_time, q_learning_time):
+    """Creates and displays a bar chart comparing the results of all three controllers."""
+    controllers = ['Fixed-Timer', 'LQF Agent', 'Q-Learning Agent']
+    wait_times = [fixed_time, lqf_time, q_learning_time]
+    colors = ['#d9534f', '#5cb85c', '#428bca'] # Red, Green, Blue
 
-    plt.figure(figsize=(8, 6)) # Create a figure to draw on
-    bars = plt.bar(controllers, wait_times, color=['#d9534f', '#5cb85c']) # Red for bad, green for good
+    plt.figure(figsize=(10, 7))
+    bars = plt.bar(controllers, wait_times, color=colors)
 
-    plt.ylabel('Average Waiting Time (seconds)') # Set the Y-axis label
-    plt.title('Performance Comparison of Traffic Controllers') # Set the chart's title
-    plt.ylim(0, max(wait_times) * 1.1) # Set the Y-axis limit to be a bit taller than the tallest bar
+    plt.ylabel('Average Waiting Time (seconds)')
+    plt.title('Performance Comparison of Traffic Controllers')
+    plt.ylim(0, max(wait_times) * 1.2)
 
-    # Add the wait time value on top of each bar
     for bar in bars:
         yval = bar.get_height()
         plt.text(bar.get_x() + bar.get_width()/2.0, yval + 1, f'{yval:.2f}s', ha='center', va='bottom')
 
-    plt.show() # Display the chart in a new window
+    plt.show()
 
 # --- Main Analysis ---
 if __name__ == "__main__":
-    try:
-        avg_wait_fixed = get_average_wait_time('tripinfo_fixed.xml')
-        avg_wait_lqf = get_average_wait_time('tripinfo_lqf.xml')
+    # Get results for all three agents
+    avg_wait_fixed = get_average_wait_time('tripinfo_fixed.xml')
+    avg_wait_lqf = get_average_wait_time('tripinfo_lqf.xml')
+    avg_wait_q_learning = get_average_wait_time('tripinfo_q_learning.xml')
 
+    # Proceed only if all files were found and parsed
+    if all(v is not None for v in [avg_wait_fixed, avg_wait_lqf, avg_wait_q_learning]):
         print("\n--- Traffic Control Performance Analysis ---")
         print(f"Fixed-Timer Controller Average Wait Time: {avg_wait_fixed:.2f} seconds")
         print(f"LQF Agent Controller Average Wait Time:   {avg_wait_lqf:.2f} seconds")
+        print(f"Q-Learning Agent Average Wait Time:       {avg_wait_q_learning:.2f} seconds")
         print("------------------------------------------")
 
-        if avg_wait_fixed > 0:
-            improvement = ((avg_wait_fixed - avg_wait_lqf) / avg_wait_fixed) * 100
-            print(f"\nYour smart agent reduced the average waiting time by {improvement:.2f}%.")
-
-        # Call the new plotting function
-        plot_results(avg_wait_fixed, avg_wait_lqf)
-
-    except FileNotFoundError as e:
-        print(f"\nError: Could not find a results file. Did you run both simulations first?")
-        print(f"Missing file: {e.filename}")
+        # Call the plotting function with all three results
+        plot_results(avg_wait_fixed, avg_wait_lqf, avg_wait_q_learning)

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-09-26 23:32:36 by Eclipse SUMO GUI Version 1.23.1
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="cross.net.xml"/>
+        <route-files value="cross.rou.xml"/>
+        <additional-files value="cross.add.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="tripinfo_q_learning.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+    </time>
+
+    <traci_server>
+        <remote-port value="59143"/>
+    </traci_server>
+
+</sumoConfiguration>
+-->
+
+<tripinfos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/tripinfo_file.xsd">
+    <tripinfo id="flow_main_road.0" depart="0.00" departLane="W_in_0" departPos="5.10" departSpeed="0.00" departDelay="0.00" arrival="74.00" arrivalLane="E_out_0" arrivalPos="486.40" arrivalSpeed="14.63" duration="74.00" routeLength="994.90" waitingTime="0.00" waitingCount="0" stopTime="0.00" timeLoss="5.97" rerouteNo="0" devices="tripinfo_flow_main_road.0 routing_flow_main_road.0" vType="car" speedFactor="1.06" vaporized=""/>
+    <tripinfo id="flow_side_road.0" depart="0.00" departLane="N_in_0" departPos="5.10" departSpeed="0.00" departDelay="0.00" arrival="89.00" arrivalLane="S_out_0" arrivalPos="486.40" arrivalSpeed="11.79" duration="89.00" routeLength="994.90" waitingTime="1.00" waitingCount="1" stopTime="0.00" timeLoss="12.67" rerouteNo="0" devices="tripinfo_flow_side_road.0 routing_flow_side_road.0" vType="car" speedFactor="0.94" vaporized=""/>
+    <tripinfo id="flow_main_road.2" depart="8.00" departLane="W_in_0" departPos="5.10" departSpeed="0.00" departDelay="0.80" arrival="98.00" arrivalLane="E_out_0" arrivalPos="486.40" arrivalSpeed="14.74" duration="90.00" routeLength="994.90" waitingTime="12.00" waitingCount="1" stopTime="0.00" timeLoss="23.40" rerouteNo="0" devices="tripinfo_flow_main_road.2 routing_flow_main_road.2" vType="car" speedFactor="1.08" vaporized=""/>
+    <tripinfo id="flow_main_road.5" depart="18.00" departLane="W_in_0" departPos="5.10" departSpeed="0.00" departDelay="0.00" arrival="99.00" arrivalLane="E_out_1" arrivalPos="486.40" arrivalSpeed="13.28" duration="81.00" routeLength="994.90" waitingTime="0.00" waitingCount="0" stopTime="0.00" timeLoss="12.13" rerouteNo="0" devices="tripinfo_flow_main_road.5 routing_flow_main_road.5" vType="car" speedFactor="1.05" vaporized=""/>
+    <tripinfo id="flow_main_road.1" depart="4.00" departLane="W_in_0" departPos="5.10" departSpeed="0.00" departDelay="0.40" arrival="101.00" arrivalLane="E_out_0" arrivalPos="486.40" arrivalSpeed="13.47" duration="97.00" routeLength="994.90" waitingTime="14.00" waitingCount="1" stopTime="0.00" timeLoss="25.91" rerouteNo="0" devices="tripinfo_flow_main_road.1 routing_flow_main_road.1" vType="car" speedFactor="1.01" vaporized=""/>
+    <tripinfo id="flow_main_road.3" depart="11.00" departLane="W_in_0" departPos="5.10" departSpeed="0.00" departDelay="0.20" arrival="102.00" arrivalLane="E_out_1" arrivalPos="486.40" arrivalSpeed="14.04" duration="91.00" routeLength="994.90" waitingTime="9.00" waitingCount="1" stopTime="0.00" timeLoss="21.47" rerouteNo="0" devices="tripinfo_flow_main_road.3 routing_flow_main_road.3" vType="car" speedFactor="1.03" vaporized=""/>
+</tripinfos>
