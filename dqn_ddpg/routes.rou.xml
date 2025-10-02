@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" minGap="2.5" maxSpeed="13.9" color="1,0,0"/>
+
+    <route id="route_N_S" edges="N2C C2S"/>
+    <route id="route_N_E" edges="N2C C2E"/>
+    <route id="route_N_W" edges="N2C C2W"/>
+
+    <route id="route_E_W" edges="E2C C2W"/>
+    <route id="route_E_N" edges="E2C C2N"/>
+    <route id="route_E_S" edges="E2C C2S"/>
+
+    <route id="route_S_N" edges="S2C C2N"/>
+    <route id="route_S_W" edges="S2C C2W"/>
+    <route id="route_S_E" edges="S2C C2E"/>
+
+    <route id="route_W_E" edges="W2C C2E"/>
+    <route id="route_W_S" edges="W2C C2S"/>
+    <route id="route_W_N" edges="W2C C2N"/>
+
+    <flow id="flow_north_straight" begin="0" end="3600" vehsPerHour="150" type="car" route="route_N_S"/>
+    <flow id="flow_north_left"     begin="0" end="3600" vehsPerHour="100" type="car" route="route_N_E"/>
+    <flow id="flow_north_right"    begin="0" end="3600" vehsPerHour="120" type="car" route="route_N_W"/>
+
+    <flow id="flow_south_straight" begin="0" end="3600" vehsPerHour="150" type="car" route="route_S_N"/>
+    <flow id="flow_south_left"     begin="0" end="3600" vehsPerHour="100" type="car" route="route_S_W"/>
+    <flow id="flow_south_right"    begin="0" end="3600" vehsPerHour="120" type="car" route="route_S_E"/>
+
+    <flow id="flow_east_straight"  begin="0" end="3600" vehsPerHour="150" type="car" route="route_E_W"/>
+    <flow id="flow_east_left"      begin="0" end="3600" vehsPerHour="100" type="car" route="route_E_S"/>
+    <flow id="flow_east_right"     begin="0" end="3600" vehsPerHour="120" type="car" route="route_E_N"/>
+
+    <flow id="flow_west_straight"  begin="0" end="3600" vehsPerHour="150" type="car" route="route_W_E"/>
+    <flow id="flow_west_left"      begin="0" end="3600" vehsPerHour="100" type="car" route="route_W_N"/>
+    <flow id="flow_west_right"     begin="0" end="3600" vehsPerHour="120" type="car" route="route_W_S"/>
+</routes>
