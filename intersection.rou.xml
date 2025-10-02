@@ -1,0 +1,38 @@
+<!-- intersection.rou.xml -->
+<routes>
+    <!-- Vehicle Types -->
+    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="70"/>
+    <vType id="ambulance" accel="4.0" decel="5.0" sigma="0.0" length="7" maxSpeed="90" color="red" guiShape="emergency" vClass="emergency"/>
+
+    <!-- Routes -->
+    <route id="N_S" edges="N2C C2S"/>
+    <route id="N_E" edges="N2C C2E"/>
+    <route id="N_W" edges="N2C C2W"/>
+
+    <route id="S_N" edges="S2C C2N"/>
+    <route id="S_E" edges="S2C C2E"/>
+    <route id="S_W" edges="S2C C2W"/>
+
+    <route id="E_W" edges="E2C C2W"/>
+    <route id="E_N" edges="E2C C2N"/>
+    <route id="E_S" edges="E2C C2S"/>
+
+    <route id="W_E" edges="W2C C2E"/>
+    <route id="W_N" edges="W2C C2N"/>
+    <route id="W_S" edges="W2C C2S"/>
+
+    <!-- Traffic Flow -->
+    <flow id="flow_N" type="car" route="N_S" begin="0" end="3600" period="10"/>
+    <flow id="flow_N_turn_E" type="car" route="N_E" begin="0" end="3600" period="15"/>
+    <flow id="flow_N_turn_W" type="car" route="N_W" begin="0" end="3600" period="15"/>
+
+    <flow id="flow_S" type="car" route="S_N" begin="0" end="3600" period="12"/>
+    <flow id="flow_E" type="car" route="E_W" begin="0" end="3600" period="9"/>
+    <flow id="flow_E_turn_S" type="car" route="E_S" begin="0" end="3600" period="14"/>
+
+    <flow id="flow_W" type="car" route="W_E" begin="0" end="3600" period="11"/>
+
+    <!-- Add a single ambulance at a specific time -->
+    <vehicle id="ambulance_1" type="ambulance" route="S_N" depart="150" />
+
+</routes>
