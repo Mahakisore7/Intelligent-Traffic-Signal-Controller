@@ -1,11 +1,11 @@
-# evaluate_q_agent.py
+# q_learning_agent.py (Optimized Version)
 
 import traci
 import sys
 import os
+import random
 import numpy as np
-import pickle # Used to load the saved Q-Table
-import xml.etree.ElementTree as ET # Used for final analysis
+import pickle
 
 # --- SUMO SETUP ---
 if 'SUMO_HOME' in os.environ:
@@ -14,20 +14,22 @@ if 'SUMO_HOME' in os.environ:
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-# --- AGENT SETUP ---
-# We don't need learning parameters here, just the trained brain.
-try:
-    with open('q_table.pkl', 'rb') as f:
-        q_table = pickle.load(f)
-except FileNotFoundError:
-    sys.exit("Error: q_table.pkl not found. Please run q_learning_agent.py to train the agent first.")
+# --- OPTIMIZED Q-LEARNING PARAMETERS ---
+# Hyperparameters have been tuned for better performance
+alpha = 0.2          # Learning Rate: Increased to learn faster from new states.
+gamma = 0.95         # Discount Factor: Kept the same.
+epsilon = 1.0        # Exploration Rate (initial): Starts at 100% random.
+epsilon_decay = 0.999 # Slower decay for more exploration over more episodes.
+epsilon_min = 0.01
+EPISODES = 100       # INCREASED: More training time to explore the larger state space.
 
-# Define the actions: 0 = stay, 1 = switch
+# --- AGENT SETUP ---
+q_table = {}
 ACTION_STAY = 0
 ACTION_SWITCH = 1
 actions = [ACTION_STAY, ACTION_SWITCH]
 
-# --- PHASE & LANE DEFINITIONS (FROM YOUR PROJECT) ---
+# --- SIMULATION CONSTANTS ---
 TLS_ID = "J1"
 NS_GREEN_PHASE = 0
 NS_YELLOW_PHASE = 1
@@ -35,77 +37,98 @@ EW_GREEN_PHASE = 2
 EW_YELLOW_PHASE = 3
 NS_LANES = ["N_in_0", "N_in_1", "N_in_2", "S_in_0", "S_in_1", "S_in_2"]
 EW_LANES = ["E_in_0", "E_in_1", "E_in_2", "W_in_0", "W_in_1", "W_in_2"]
+ALL_LANES = NS_LANES + EW_LANES
 
 # --- HELPER FUNCTIONS ---
 
 def get_state():
-    """Gets the state of the intersection (same as in the training script)."""
+    """
+    IMPROVED: Retrieves a more granular state of the intersection.
+    """
     ns_queue = sum(traci.lane.getLastStepHaltingNumber(lane) for lane in NS_LANES)
     ew_queue = sum(traci.lane.getLastStepHaltingNumber(lane) for lane in EW_LANES)
-    ns_level = 0
-    if ns_queue > 15: ns_level = 2
-    elif ns_queue > 5: ns_level = 1
-    ew_level = 0
-    if ew_queue > 15: ew_level = 2
-    elif ew_queue > 5: ew_level = 1
+
+    # SHARPER VISION: Discretize queue lengths into smaller bins (of 3)
+    # This creates more states but gives the agent a more precise view.
+    ns_level = min(ns_queue // 3, 10)  # Bin into levels 0-10 (e.g., 0-2 cars -> 0, 3-5 -> 1, etc.)
+    ew_level = min(ew_queue // 3, 10)
+
     current_phase = traci.trafficlight.getPhase(TLS_ID)
     phase_is_ns = 1 if current_phase == NS_GREEN_PHASE else 0
+
     return (ns_level, ew_level, phase_is_ns)
 
-def get_average_wait_time(xml_file):
-    """Parses a SUMO tripinfo XML and returns the average waiting time."""
-    tree = ET.parse(xml_file)
-    root = tree.getroot()
-    total_wait_time = 0.0
-    vehicle_count = 0
-    for tripinfo in root.findall('tripinfo'):
-        wait_time_str = tripinfo.get('waitingTime')
-        if wait_time_str:
-            total_wait_time += float(wait_time_str)
-            vehicle_count += 1
-    if vehicle_count == 0:
-        return 0
-    return total_wait_time / vehicle_count
+def run_step(action):
+    """
+    Performs the chosen action in SUMO and returns the reward.
+    """
+    old_total_wait_time = sum(traci.lane.getWaitingTime(lane) for lane in ALL_LANES)
+    
+    switching_penalty = -5 if action == ACTION_SWITCH else 0
 
-# --- MAIN EVALUATION SCRIPT ---
-if __name__ == "__main__":
-    # The command now uses the GUI and creates a new tripinfo file for this agent
-    sumo_cmd = ["sumo-gui", "-c", "cross.sumocfg", "--tripinfo-output", "tripinfo_q_learning.xml"]
-    
-    traci.start(sumo_cmd)
-    
-    while traci.simulation.getMinExpectedNumber() > 0:
-        # 1. GET CURRENT STATE
-        current_state = get_state()
+    current_phase = traci.trafficlight.getPhase(TLS_ID)
+    is_ns_green = current_phase == NS_GREEN_PHASE
+
+    if action == ACTION_SWITCH:
+        yellow_phase = NS_YELLOW_PHASE if is_ns_green else EW_YELLOW_PHASE
+        traci.trafficlight.setPhase(TLS_ID, yellow_phase)
+        for _ in range(4): traci.simulationStep()
         
-        # 2. CHOOSE ACTION (EXPLOITATION ONLY)
-        # Check if the state exists in the Q-Table, if not, default to a safe action (stay)
-        if current_state in q_table:
-            # We set epsilon=0, so we ALWAYS choose the action with the highest Q-value.
-            action = np.argmax(q_table[current_state])
-        else:
-            # If the agent has never seen this state before, take a default action.
-            action = ACTION_STAY
+        next_green_phase = EW_GREEN_PHASE if is_ns_green else NS_GREEN_PHASE
+        traci.trafficlight.setPhase(TLS_ID, next_green_phase)
+        for _ in range(10): traci.simulationStep()
+    else: # ACTION_STAY
+        for _ in range(10): traci.simulationStep()
 
-        # 3. PERFORM ACTION
-        current_phase = traci.trafficlight.getPhase(TLS_ID)
-        is_ns_green = current_phase == NS_GREEN_PHASE
-
-        if action == ACTION_SWITCH:
-            yellow_phase = NS_YELLOW_PHASE if is_ns_green else EW_YELLOW_PHASE
-            traci.trafficlight.setPhase(TLS_ID, yellow_phase)
-            for _ in range(4): traci.simulationStep()
-            
-            next_green_phase = EW_GREEN_PHASE if is_ns_green else NS_GREEN_PHASE
-            traci.trafficlight.setPhase(TLS_ID, next_green_phase)
-            for _ in range(10): traci.simulationStep()
-        else: # ACTION_STAY
-            for _ in range(10): traci.simulationStep()
-
-    traci.close()
+    new_total_wait_time = sum(traci.lane.getWaitingTime(lane) for lane in ALL_LANES)
     
-    # --- FINAL ANALYSIS ---
-    avg_wait_time = get_average_wait_time('tripinfo_q_learning.xml')
-    print(f"\n--- Q-Learning Agent Evaluation Finished ---")
-    print(f"Average Waiting Time: {avg_wait_time:.2f} seconds")
-    print("------------------------------------------")
+    reward = (old_total_wait_time - new_total_wait_time) + switching_penalty
+    return reward
+
+# --- MAIN TRAINING SCRIPT ---
+if __name__ == "__main__":
+    sumo_cmd = ["sumo", "-c", "cross.sumocfg", "--tripinfo-output", "tripinfo_q_learning_optimized.xml", "--no-step-log", "true", "-W", "true", "--duration-log.disable", "true"]
+    
+    for episode in range(EPISODES):
+        traci.start(sumo_cmd)
+        
+        current_state = get_state()
+        total_episode_reward = 0
+        
+        while traci.simulation.getMinExpectedNumber() > 0:
+            
+            if current_state not in q_table:
+                q_table[current_state] = np.zeros(len(actions))
+
+            if random.uniform(0, 1) < epsilon:
+                action = random.choice(actions)
+            else:
+                action = np.argmax(q_table[current_state])
+
+            reward = run_step(action)
+            next_state = get_state()
+            total_episode_reward += reward
+
+            if next_state not in q_table:
+                q_table[next_state] = np.zeros(len(actions))
+            
+            old_q_value = q_table[current_state][action]
+            best_future_q = np.max(q_table[next_state])
+            
+            new_q_value = old_q_value + alpha * (reward + gamma * best_future_q - old_q_value)
+            q_table[current_state][action] = new_q_value
+            
+            current_state = next_state
+
+        traci.close()
+        
+        if epsilon > epsilon_min:
+            epsilon *= epsilon_decay
+            
+        print(f"Episode: {episode + 1}/{EPISODES}, Total Reward: {total_episode_reward:.2f}, Epsilon: {epsilon:.4f}")
+
+    print("\nTraining finished.")
+    with open('q_table_optimized.pkl', 'wb') as f:
+        pickle.dump(q_table, f)
+    print("Optimized Q-Table saved to q_table_optimized.pkl")
+

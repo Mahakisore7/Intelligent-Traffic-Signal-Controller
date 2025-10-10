@@ -1,0 +1,13 @@
+<routes>
+    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="15" />
+    <vType id="ambulance" accel="3.5" decel="5.0" sigma="0.2" length="6" maxSpeed="25" color="blue" vClass="emergency" />
+
+    <!-- Heavy, continuous East-West traffic to force a green light -->
+    <flow id="jam_flow_EW" type="car" begin="0" end="200" vehsPerHour="1000" from="E_in" to="W_out" />
+    <flow id="jam_flow_WE" type="car" begin="0" end="200" vehsPerHour="1000" from="W_in" to="E_out" />
+
+    <!-- A single ambulance that will arrive during the traffic jam -->
+    <vehicle id="ambulance_1" type="ambulance" depart="100" departLane="0">
+        <route edges="N_in S_out"/>
+    </vehicle>
+</routes>

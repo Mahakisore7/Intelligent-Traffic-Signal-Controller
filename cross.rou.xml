@@ -1,7 +1,34 @@
 <routes>
-    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="15" imgFile ="car.png"/>
+    <!-- Define the vehicle type -->
+    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="15" />
+    <vType id="ambulance" accel="3.5" decel="5.0" sigma="0.2" length="6" maxSpeed="25" color="blue" vClass="emergency" />
 
-    <flow id="flow_main_road" type="car" begin="0" end="1800" number="500" from="W_in" to="E_out" />
-    <flow id="flow_side_road" type="car" begin="0" end="1800" number="50" from="N_in" to="S_out" />
+    <!-- Main Unbalanced Traffic Flow (West to East is busiest) -->
+    <flow id="flow_W_E_straight" type="car" begin="0" end="3600" number="400" from="W_in" to="E_out" />
+    <flow id="flow_N_S_straight" type="car" begin="0" end="3600" number="50" from="N_in" to="S_out" />
+
+    <!-- Adding Turning Traffic -->
+    <!-- From West -->
+    <flow id="flow_W_N_right" type="car" begin="0" end="3600" number="50" from="W_in" to="N_out" />
+    <flow id="flow_W_S_left"  type="car" begin="0" end="3600" number="50" from="W_in" to="S_out" />
+
+    <!-- From East -->
+    <flow id="flow_E_W_straight" type="car" begin="0" end="3600" number="100" from="E_in" to="W_out" />
+    <flow id="flow_E_S_right" type="car" begin="0" end="3600" number="25" from="E_in" to="S_out" />
+    <flow id="flow_E_N_left"  type="car" begin="0" end="3600" number="25" from="E_in" to="N_out" />
+
+    <!-- From North -->
+    <flow id="flow_N_W_left"  type="car" begin="0" end="3600" number="20" from="N_in" to="W_out" />
+    <flow id="flow_N_E_right" type="car" begin="0" end="3600" number="20" from="N_in" to="E_out" />
+
+    <!-- From South -->
+    <flow id="flow_S_N_straight" type="car" begin="0" end="3600" number="40" from="S_in" to="N_out" />
+    <flow id="flow_S_E_left"  type="car" begin="0" end="3600" number="15" from="S_in" to="E_out" />
+    <flow id="flow_S_W_right" type="car" begin="0" end="3600" number="15" from="S_in" to="W_out" />
+
+    <!-- Define a single ambulance route for the demonstration -->
+    <vehicle id="ambulance_1" type="ambulance" depart="150" departLane="0">
+        <route edges="N_in S_out"/>
+    </vehicle>
 
 </routes>

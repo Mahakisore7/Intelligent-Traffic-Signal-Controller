@@ -13,7 +13,7 @@ else:
 
 # This is the command to start the SUMO simulation with a graphical interface.
 # Change this line in agent.py
-sumo_cmd = ["sumo-gui", "-c", "cross.sumocfg", "--tripinfo-output", "tripinfo_lqf.xml"]
+sumo_cmd = ["sumo-gui", "-c", "cross.sumocfg", "--tripinfo-output", "tripinfo_no_preemption.xml"]
 
 # --- CONTROLLER PARAMETERS ---
 MIN_GREEN_TIME = 10  # A green light will stay for at least 10 seconds.

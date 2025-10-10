@@ -1,7 +1,7 @@
 <configuration>
    <input>
        <net-file value="cross.net.xml"/>
-       <route-files value="cross.rou.xml"/>
+       <route-files value="cross_ambulance_test.rou.xml"/>
        <additional-files value="cross.add.xml"/>
    </input>
    <time>
