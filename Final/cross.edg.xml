@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edges xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
+
+    <!-- Incoming Roads: These are the roads that lead INTO the central intersection (J1) -->
+    <edge id="N_in" from="N1" to="J1" priority="7" numLanes="3" speed="13.89" />
+    <edge id="S_in" from="S1" to="J1" priority="7" numLanes="3" speed="13.89" />
+    <edge id="E_in" from="E1" to="J1" priority="7" numLanes="3" speed="13.89" />
+    <edge id="W_in" from="W1" to="J1" priority="7" numLanes="3" speed="13.89" />
+
+    <!-- Outgoing Roads: These are the roads that lead AWAY FROM the central intersection (J1) -->
+    <edge id="N_out" from="J1" to="N1" priority="7" numLanes="3" speed="13.89" />
+    <edge id="S_out" from="J1" to="S1" priority="7" numLanes="3" speed="13.89" />
+    <edge id="E_out" from="J1" to="E1" priority="7" numLanes="3" speed="13.89" />
+    <edge id="W_out" from="J1" to="W1" priority="7" numLanes="3" speed="13.89" />
+
+</edges>

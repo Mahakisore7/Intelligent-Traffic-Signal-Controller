@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/config_file.xsd">
+
+    <input>
+        <!-- This points to the network file that will be created from your .nod and .edg files -->
+        <net-file value="cross.net.xml"/>
+        
+        <!-- This points to the route file defining all the vehicles -->
+        <route-files value="cross.rou.xml"/>
+        
+        <!-- This points to the logic for the Fixed-Timer controller.
+             We will comment this line out when we want to use our Python agents. -->
+        <!-- <additional-files value="cross.add.xml"/> -->
+    </input>
+
+    <time>
+        <!-- This tells the simulation to start at time 0 -->
+        <begin value="0"/>
+    </time>
+
+</configuration>

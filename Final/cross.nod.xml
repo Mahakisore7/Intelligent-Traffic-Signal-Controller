@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
+
+    <!-- This is the central intersection node.
+         The type="traffic_light" attribute is crucial. It tells SUMO that this junction
+         will be controlled by traffic signals, allowing our Python scripts to interact with it. -->
+    <node id="J1" type="traffic_light" x="0" y="0" />
+
+    <!-- These are the outer nodes that define the start/end points of our roads. -->
+    <node id="N1" x="0" y="500" />  <!-- North -->
+    <node id="S1" x="0" y="-500" /> <!-- South -->
+    <node id="E1" x="500" y="0" />  <!-- East -->
+    <node id="W1" x="-500" y="0" /> <!-- West -->
+
+</nodes>

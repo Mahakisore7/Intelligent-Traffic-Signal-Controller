@@ -1,0 +1,23 @@
+<additional>
+    <!-- 
+        This file defines the logic for a "dumb" fixed-time traffic light controller.
+        It specifies a static, repeating cycle of green and yellow phases.
+        This controller is unaware of the traffic conditions.
+    -->
+    <tlLogic id="J1" type="static" programID="fixed_program" offset="0">
+        <!-- The 'state' strings below are 24 characters long, matching the number of signals
+             in our specific intersection, which is the robust fix for the 'Mismatching phase size' error. -->
+
+        <!-- Phase 1: 30 seconds of Green for North-South traffic -->
+        <phase duration="30" state="GGGGggrrrrrrGGGGggrrrrrr"/>
+        
+        <!-- Phase 2: 4 seconds of Yellow for North-South traffic -->
+        <phase duration="4"  state="yyyyyyrrrrrryyyyyyrrrrrr"/>
+        
+        <!-- Phase 3: 30 seconds of Green for East-West traffic -->
+        <phase duration="30" state="rrrrrrGGGGggrrrrrrGGGGgg"/>
+        
+        <!-- Phase 4: 4 seconds of Yellow for East-West traffic -->
+        <phase duration="4"  state="rrrrrryyyyyyrrrrrryyyyyy"/>
+    </tlLogic>
+</additional>
